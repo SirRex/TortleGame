@@ -103,7 +103,6 @@ end
 function player_movement(player)
 
     local movement = player
-    player.currentAnim = player.anims.idle
     
     if (btn(0)) then
         player.x = player.x-1
@@ -157,6 +156,10 @@ function player_animations(player)
 		player.timer = player.frame[3]
 	else
 		player.timer -= 1
+    end
+
+    if (player.currentAnim == player.anims.sword) and (player.frameNum == 4) and (player.timer == 0) then
+        player.currentAnim = player.anims.idle
     end
 
 end
