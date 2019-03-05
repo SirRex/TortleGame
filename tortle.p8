@@ -12,6 +12,7 @@ __lua__
     --respawn baddie after X seconds
 
 player = nil
+baddie = nil
 
 function _init()
     
@@ -61,6 +62,11 @@ function make_actor(x,y)
     a.life = 1
 
     return a
+
+end
+
+function make_enemy()
+
 
 end
 
