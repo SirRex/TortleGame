@@ -83,7 +83,7 @@ function make_player()
 		    {33, 2, 4}
 	    },
     	sword = {
-            {1, 2, 10},
+            {1, 2, 2},
             {3, 2, 3},
             {5, 3, 1},
             {8, 2, 2},
@@ -143,6 +143,7 @@ function player_actions(player)
     local actions = player
 
     if (btn(4)) then
+        player.frameNum = 0
         player.currentAnim = player.anims.sword
     end
 
