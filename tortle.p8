@@ -97,6 +97,7 @@ function make_player()
 	    }
     }
 
+    -- The initial animation for the player is idle.
     player.currentAnim = player.anims.idle
     player.frameNum = 1
     player.frame = player.currentAnim[1]
@@ -114,19 +115,18 @@ function player_movement(player)
         player.x = player.x-1
         player.currentAnim = player.anims.walk
         player.flip = true
-    end
-    if (btn(1)) then
+    elseif (btn(1)) then
         player.x = player.x+1
         player.currentAnim = player.anims.walk
         player.flip = false
-    end
-    if (btn(2)) then
+    elseif (btn(2)) then
         player.y = player.y-1
         player.currentAnim = player.anims.walk
-    end
-    if (btn(3)) then
+    elseif (btn(3)) then
         player.y = player.y+1
         player.currentAnim = player.anims.walk
+    elseif (player.currentAnim != player.anims.sword) then
+        player.currentAnim = player.anims.idle
     end
 
     if player.y==63
@@ -165,6 +165,7 @@ function player_animations(player)
 		player.timer -= 1
     end
 
+    -- if the attack animation just finished, set the animation to idle.
     if (player.currentAnim == player.anims.sword) and (player.frameNum == 4) and (player.timer == 0) then
         player.currentAnim = player.anims.idle
     end
