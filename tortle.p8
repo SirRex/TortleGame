@@ -37,18 +37,18 @@ function _draw()
     map(0,0,0,0,16,8)
 
     --player sprite (pre-animation)
-    --spr(1,player.x,player.y,2,2)
+    --spr(1,player.position.x,player.position.y,2,2)
     local offset = 0
 
     if ((not player.facingRight) and player.frame[2] > 2)
         then offset = (player.frame[2] - 2)*8
     end
 
-    spr(player.frame[1],player.x-offset,player.y,player.frame[2],2,not player.facingRight)
+    spr(player.frame[1],player.position.x-offset,player.position.y,player.frame[2],2,not player.facingRight)
 
     --for debugging sprite location for wall detection
-    print("x "..player.x)
-    print("y "..player.y)
+    print("x "..player.position.x)
+    print("y "..player.position.y)
     print("state "..player.state)
 
 end
@@ -65,8 +65,7 @@ end
 function make_actor(x,y)
 
     local a = {}
-    a.x = x
-    a.y = y
+    a.position = vec2(x, y)
     a.life = 1
 
     return a
@@ -149,21 +148,21 @@ end
 function player_movement(player)
 
     if player.state == states.walking then
-        player.x += player.direction.x
-        player.y += player.direction.y
+        player.position.x += player.direction.x
+        player.position.y += player.direction.y
     end
 
-    if player.y==63
-        then player.y = player.y+1
+    if player.position.y==63
+        then player.position.y = player.position.y+1
     end
-    if player.y==112
-        then player.y = player.y-1
+    if player.position.y==112
+        then player.position.y = player.position.y-1
     end
-    if player.x==-1
-        then player.x = player.x+1
+    if repal==-1
+        then player.position.x = player.position.x+1
     end
-    if player.x==113
-        then player.x = player.x-1
+    if player.position.x==113
+        then player.position.x = player.position.x-1
     end
 end
 
