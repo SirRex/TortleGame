@@ -170,13 +170,22 @@ function player_actions(player)
     local actions = player
 
     if (btn(4)) then
-        player.frameNum = 0
-        player.currentAnim = player.anims.sword
+        -- TODO: attack
     end
 
 end
 
 function player_animations(player)
+
+    if player.state == states.walking then
+        player.currentAnim = player.anims.walk
+    end
+    if player.state == states.attacking then
+        player.currentAnim = player.anims.sword
+    end
+    if player.state == states.idle then
+        player.currentAnim = player.anims.idle
+    end
 
     if (player.timer <= 0) then
 		player.frameNum = (player.frameNum + 1) % #player.currentAnim
