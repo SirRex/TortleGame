@@ -122,6 +122,10 @@ end
 function player_input(player)
     player.direction = vec2(0, 0)
 
+    if (player.state != states.attacking) then
+        player.state = states.idle
+    end
+
     if (btn(0)) then
         player.direction.x += -1
         player.state = states.walking
