@@ -148,8 +148,7 @@ end
 function player_movement(player)
 
     if player.state == states.walking then
-        player.position.x += player.direction.x
-        player.position.y += player.direction.y
+        player.position = vec2add(player.position, player.direction)
     end
 
     if player.position.y==63
@@ -158,7 +157,7 @@ function player_movement(player)
     if player.position.y==112
         then player.position.y = player.position.y-1
     end
-    if repal==-1
+    if player.position.x==-1
         then player.position.x = player.position.x+1
     end
     if player.position.x==113
