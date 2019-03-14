@@ -15,13 +15,13 @@ player = nil
 baddie = nil
 
 function _init()
-    
+
     player = make_player()
 
 end
 
 function _draw()
-    
+
     cls()
 
     --for debugging sprite animation
@@ -55,7 +55,7 @@ function _update()
 end
 
 function make_actor(x,y)
-    
+
     local a = {}
     a.x = x
     a.y = y
@@ -71,11 +71,11 @@ function make_enemy()
 end
 
 function make_player()
-    
+
     player = make_actor(78,112)
     player.score = 0
     player.flip = false
-    
+
     --First variable is the # of the sprite; Second is the # of sprites wide; Third is the # of frames per animation (the wait between each animation)
     --for player animations
     player.anims = {
@@ -109,7 +109,7 @@ end
 function player_movement(player)
 
     local movement = player
-    
+
     if (btn(0)) then
         player.x = player.x-1
         player.currentAnim = player.anims.walk
