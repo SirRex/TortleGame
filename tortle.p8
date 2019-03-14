@@ -14,6 +14,12 @@ __lua__
 player = nil
 baddie = nil
 
+states = {
+    idle = 1,
+    walking = 2,
+    attacking = 3
+}
+
 function _init()
 
     player = make_player()
@@ -34,20 +40,22 @@ function _draw()
     --spr(1,player.x,player.y,2,2)
     local offset = 0
 
-    if player.flip and player.frame[2] > 2
+    if ((not player.facingRight) and player.frame[2] > 2)
         then offset = (player.frame[2] - 2)*8
     end
 
-    spr(player.frame[1],player.x-offset,player.y,player.frame[2],2,player.flip)
+    spr(player.frame[1],player.x-offset,player.y,player.frame[2],2,not player.facingRight)
 
     --for debugging sprite location for wall detection
     print("x "..player.x)
     print("y "..player.y)
+    print("state "..player.state)
 
 end
 
 function _update()
 
+    player_input(player)
     player_movement(player)
     player_actions(player)
     player_animations(player)
@@ -103,30 +111,46 @@ function make_player()
     player.frame = player.currentAnim[1]
     player.timer = player.currentAnim[1][3]
 
+    -- idle, walking, attacking
+    player.state = states.idle
+    player.facingRight = true
+    player.direction = vec2(0, 0)
+
     return player
 
 end
 
-function player_movement(player)
-
-    local movement = player
+function player_input(player)
+    player.direction = vec2(0, 0)
 
     if (btn(0)) then
-        player.x = player.x-1
-        player.currentAnim = player.anims.walk
-        player.flip = true
-    elseif (btn(1)) then
-        player.x = player.x+1
-        player.currentAnim = player.anims.walk
-        player.flip = false
-    elseif (btn(2)) then
-        player.y = player.y-1
-        player.currentAnim = player.anims.walk
-    elseif (btn(3)) then
-        player.y = player.y+1
-        player.currentAnim = player.anims.walk
-    elseif (player.currentAnim != player.anims.sword) then
-        player.currentAnim = player.anims.idle
+        player.direction.x += -1
+        player.state = states.walking
+        player.facingRight = false
+    end
+
+    if (btn(1)) then
+        player.direction.x += 1
+        player.state = states.walking
+        player.facingRight = true
+    end
+
+    if (btn(2)) then
+        player.direction.y += -1
+        player.state = states.walking
+    end
+
+    if (btn(3)) then
+        player.direction.y += 1
+        player.state = states.walking
+    end
+end
+
+function player_movement(player)
+
+    if player.state == states.walking then
+        player.x += player.direction.x
+        player.y += player.direction.y
     end
 
     if player.y==63
@@ -141,7 +165,6 @@ function player_movement(player)
     if player.x==113
         then player.x = player.x-1
     end
-
 end
 
 function player_actions(player)
@@ -172,6 +195,15 @@ function player_animations(player)
 
 end
 
+-- Utility functions
+
+function vec2(x, y)
+    return {x=x, y=y}
+end
+
+function vec2add(v1, v2)
+    return vec2(v1.x + v2.x, v1.y + v2.y)
+end
 
 
 __gfx__
