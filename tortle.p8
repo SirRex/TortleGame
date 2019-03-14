@@ -31,7 +31,7 @@ function _draw()
     cls()
 
     --for debugging sprite animation
-	--spr(frame[1], 0,0, frame[2], 2)
+	--spr(frame.sprite, 0,0, frame.width, 2)
 
     --background
     map(0,0,0,0,16,8)
@@ -40,11 +40,11 @@ function _draw()
     --spr(1,player.position.x,player.position.y,2,2)
     local offset = 0
 
-    if ((not player.facingRight) and player.frame[2] > 2)
-        then offset = (player.frame[2] - 2)*8
+    if ((not player.facingRight) and player.frame.width > 2)
+        then offset = (player.frame.width - 2)*8
     end
 
-    spr(player.frame[1],player.position.x-offset,player.position.y,player.frame[2],2,not player.facingRight)
+    spr(player.frame.sprite,player.position.x-offset,player.position.y,player.frame.width,2,not player.facingRight)
 
     --for debugging sprite location for wall detection
     print("x "..player.position.x)
@@ -87,20 +87,20 @@ function make_player()
     --for player animations
     player.anims = {
         idle = {
-            {1, 2, 1}
+            make_frame(1, 2, 1)
         },
 	    walk = {
-		    {1, 2, 4},
-		    {33, 2, 4},
-		    {35, 2, 4},
-		    {33, 2, 4}
+		    make_frame(1, 2, 4),
+		    make_frame(33, 2, 4),
+		    make_frame(35, 2, 4),
+		    make_frame(33, 2, 4)
 	    },
     	sword = {
-            {1, 2, 2},
-            {3, 2, 3},
-            {5, 3, 1},
-            {8, 2, 2},
-            {3, 2, 1}
+            make_frame(1, 2, 2),
+            make_frame(3, 2, 3),
+            make_frame(5, 3, 1),
+            make_frame(8, 2, 2),
+            make_frame(3, 2, 1)
 	    }
     }
 
@@ -108,7 +108,7 @@ function make_player()
     player.currentAnim = player.anims.idle
     player.frameNum = 1
     player.frame = player.currentAnim[1]
-    player.timer = player.currentAnim[1][3]
+    player.timer = player.currentAnim[1].duration
 
     -- idle, walking, attacking
     player.state = states.idle
@@ -194,7 +194,7 @@ function player_animations(player)
     if (player.timer <= 0) then
 		player.frameNum = (player.frameNum + 1) % #player.currentAnim
 		player.frame = player.currentAnim[player.frameNum + 1]
-		player.timer = player.frame[3]
+		player.timer = player.frame.duration
 	else
 		player.timer -= 1
     end
