@@ -174,7 +174,7 @@ function player_actions(player)
     local actions = player
 
     if (btn(4)) then
-        -- TODO: attack
+        player.state = states.attacking
     end
 
 end
@@ -214,6 +214,10 @@ end
 
 function vec2add(v1, v2)
     return vec2(v1.x + v2.x, v1.y + v2.y)
+end
+
+function make_frame(sprite, width, duration)
+    return {sprite = sprite, width = width, duration = duration}
 end
 
 
