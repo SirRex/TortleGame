@@ -12,7 +12,7 @@ __lua__
     --respawn baddie after X seconds
 
 player = nil
-baddie = nil
+enemy = nil
 
 states = {
     idle = 1,
@@ -23,6 +23,7 @@ states = {
 function _init()
 
     player = make_player()
+    enemy = make_enemy()
 
 end
 
@@ -30,14 +31,9 @@ function _draw()
 
     cls()
 
-    --for debugging sprite animation
-	--spr(frame.sprite, 0,0, frame.width, 2)
-
     --background
     map(0,0,0,0,16,8)
 
-    --player sprite (pre-animation)
-    --spr(1,player.position.x,player.position.y,2,2)
     local offset = 0
 
     if ((not player.facingRight) and player.frame.width > 2)
@@ -74,17 +70,19 @@ end
 
 function make_enemy()
 
+    enemy = make_actor(112,90)
+
+    return enemy
 
 end
 
 function make_player()
 
-    player = make_actor(78,112)
+    player = make_actor(0,90)
     player.score = 0
-    player.flip = false
 
-    --First variable is the # of the sprite; Second is the # of sprites wide; Third is the # of frames per animation (the wait between each animation)
-    --for player animations
+    -- First variable is the # of the sprite; Second is the # of sprites wide; Third is the # of frames per animation (the wait between each animation)
+    -- for player animations
     player.anims = {
         idle = {
             make_frame(1, 2, 1)
@@ -100,7 +98,7 @@ function make_player()
             make_frame(3, 2, 3),
             make_frame(5, 3, 1),
             make_frame(8, 2, 2),
-            make_frame(3, 2, 1)
+            make_frame(3, 2, 1, player_attackEnd)
 	    }
     }
 
@@ -192,6 +190,11 @@ function player_animations(player)
     end
 
     if (player.timer <= 0) then
+        
+        if (player.frame.finishedCallback != nil) then
+            player.frame.finishedCallback(player)
+        end
+
 		player.frameNum = (player.frameNum + 1) % #player.currentAnim
 		player.frame = player.currentAnim[player.frameNum + 1]
 		player.timer = player.frame.duration
@@ -206,6 +209,10 @@ function player_animations(player)
 
 end
 
+function player_attackEnd(player)
+    player.state=states.idle
+end
+
 -- Utility functions
 
 function vec2(x, y)
@@ -216,8 +223,8 @@ function vec2add(v1, v2)
     return vec2(v1.x + v2.x, v1.y + v2.y)
 end
 
-function make_frame(sprite, width, duration)
-    return {sprite = sprite, width = width, duration = duration}
+function make_frame(sprite, width, duration, finishedCallback)
+    return {sprite = sprite, width = width, duration = duration, finishedCallback = finishedCallback}
 end
 
 
