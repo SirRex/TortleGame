@@ -14,6 +14,9 @@ __lua__
 player = nil
 enemy = nil
 
+actors = {
+}
+
 states = {
     idle = 1,
     walking = 2,
@@ -22,6 +25,9 @@ states = {
 
 function _init()
 
+    add (actors,make_enemy(32,32))
+    add (actors,make_enemy(32,64))
+    add (actors,make_enemy(32,96))
     player = make_player()
     enemy = make_enemy()
 
@@ -42,7 +48,9 @@ function _draw()
 
     spr(player.frame.sprite,player.position.x-offset,player.position.y,player.frame.width,2,not player.facingRight)
 
-    spr(1,enemy.position.x,enemy.position.y,2,2,true)
+    for actor in all (actors) do
+        spr(37,actor.position.x,actor.position.y,2,2)
+    end
 
     --for debugging sprite location for wall detection
     print("x "..player.position.x)
@@ -70,9 +78,10 @@ function make_actor(x,y)
 
 end
 
-function make_enemy()
+function make_enemy(x,y)
 
-    enemy = make_actor(112,90)
+
+    enemy = make_actor(x,y)
 
     return enemy
 
