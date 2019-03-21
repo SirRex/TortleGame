@@ -42,6 +42,8 @@ function _draw()
 
     spr(player.frame.sprite,player.position.x-offset,player.position.y,player.frame.width,2,not player.facingRight)
 
+    spr(1,enemy.position.x,enemy.position.y,2,2,true)
+
     --for debugging sprite location for wall detection
     print("x "..player.position.x)
     print("y "..player.position.y)
