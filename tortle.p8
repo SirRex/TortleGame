@@ -133,29 +133,30 @@ function player_input(player)
 
     if (player.state != states.attacking) then
         player.state = states.idle
+
+        if (btn(0)) then
+            player.direction.x += -1
+            player.state = states.walking
+            player.facingRight = false
+        end
+
+        if (btn(1)) then
+            player.direction.x += 1
+            player.state = states.walking
+            player.facingRight = true
+        end
+
+        if (btn(2)) then
+            player.direction.y += -1
+            player.state = states.walking
+        end
+
+        if (btn(3)) then
+            player.direction.y += 1
+            player.state = states.walking
+        end
     end
 
-    if (btn(0)) then
-        player.direction.x += -1
-        player.state = states.walking
-        player.facingRight = false
-    end
-
-    if (btn(1)) then
-        player.direction.x += 1
-        player.state = states.walking
-        player.facingRight = true
-    end
-
-    if (btn(2)) then
-        player.direction.y += -1
-        player.state = states.walking
-    end
-
-    if (btn(3)) then
-        player.direction.y += 1
-        player.state = states.walking
-    end
 end
 
 function player_movement(player)
